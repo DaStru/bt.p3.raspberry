@@ -28,6 +28,17 @@ print("Added track to tracklist")
 payload = {
         "jsonrpc": "2.0",
         "id": 1,
+        "method": "core.mixer.set_volume",
+        "params": {
+                "volume": 100
+        }
+}
+response = requests.post(mopidy_url, json=payload).json()
+print("Set volume")
+
+payload = {
+        "jsonrpc": "2.0",
+        "id": 1,
         "method": "core.playback.play"
 }
 response = requests.post(mopidy_url, json=payload).json()
