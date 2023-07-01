@@ -2,16 +2,43 @@ import requests
 import json
 import sys
 import ast
+import time
 
 mopidy_url = "http://localhost:6680/mopidy/rpc"
 
 payload = {
         "jsonrpc": "2.0",
         "id": 1,
-        "method": sys.argv[1],
-        "params": ast.literal_eval(sys.argv[2])
+        "method": "core.tracklist.clear"
 }
-
 response = requests.post(mopidy_url, json=payload).json()
+print("Cleared tracklist")
 
-print(response)
+payload = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "core.tracklist.add",
+        "params": {
+                "uris": ['local:track:testsound1.mp3']
+        }
+}
+response = requests.post(mopidy_url, json=payload).json()
+print("Added track to tracklist")
+
+payload = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "core.playback.play"
+}
+response = requests.post(mopidy_url, json=payload).json()
+print("Started playing")
+
+time.sleep(5)
+
+payload = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "core.playback.stop"
+}
+response = requests.post(mopidy_url, json=payload).json()
+print("Stopped playing")
