@@ -44,7 +44,7 @@ payload = {
 response = requests.post(mopidy_url, json=payload).json()
 print("Started playing")
 
-time.sleep(5)
+time.sleep(15)
 
 payload = {
         "jsonrpc": "2.0",
