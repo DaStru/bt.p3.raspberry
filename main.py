@@ -103,11 +103,10 @@ def on_message(client, userdata, msg):
     print(f"{msg.topic} {msg.payload}")
     
     action = msg.payload["action"]
-    match action:
-        case "play":
-            start_playback(msg.payload["payload"]["sound_name"])
-        case "stop":
-            stop_playback()
+    if action == "play":
+        start_playback(msg.payload["payload"]["sound_name"])
+    elif action == "stop":
+        stop_playback()
 
 
 #connect to mqtt
