@@ -7,7 +7,8 @@ from ST7789 import ST7789
 
 #setup display
 SPI_SPEED_MHZ = 80
-image_file = "./assets/images/sleeping_dog.gif"
+sleeping_gif_file = "./assets/images/sleeping_dog.gif"
+harmony_screen_file = "./assets/images/harmony_screen.png"
 
 disp = ST7789(
     height=240,
@@ -20,7 +21,9 @@ disp = ST7789(
     spi_speed_hz=SPI_SPEED_MHZ * 1000 * 1000
 )
 disp.begin()
-image = Image.open(image_file)
+sleeping_gif = Image.open(sleeping_gif_file)
+harmony_screen = Image.open(harmony_screen_file)
+harmony_screen.resize((disp.width, disp.height))
 
 gif_frame = 0
 
@@ -70,8 +73,8 @@ def start_playback(sound):
     response = requests.post(mopidy_url, json=payload).json()
     currently_playing = True
 
-    image.seek(gif_frame)
-    disp.display(image.resize((disp.width, disp.height)))
+    sleeping_gif.seek(gif_frame)
+    disp.display(sleeping_gif.resize((disp.width, disp.height)))
     gif_frame += 1
     time.sleep(0.05)
 
@@ -89,8 +92,8 @@ def stop_playback():
     response = requests.post(mopidy_url, json=payload).json()
     currently_playing = False
 
+    disp.display(harmony_screen)
     gif_frame = 0
-
     print("Stopped playing")
 
 
@@ -118,17 +121,20 @@ client.connect("3.78.96.233", 1883, 60)
 
 client.loop_start()
 
+#display logo
+disp.display(harmony_screen)
+
 #start loop
 while True:
-    if currently_playing == False:
-        print("Waiting for messages")
-        time.sleep(0.5)
-    else:
+    if currently_playing == True:
         try:
-            image.seek(gif_frame)
-            disp.display(image.resize((disp.width, disp.height)))
+            sleeping_gif.seek(gif_frame)
+            disp.display(sleeping_gif.resize((disp.width, disp.height)))
             gif_frame += 1
             time.sleep(0.05)
 
         except EOFError:
             gif_frame = 0
+    else:
+        print("Waiting for messages")
+        time.sleep(1)
