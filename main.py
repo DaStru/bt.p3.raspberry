@@ -101,8 +101,8 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print(f"{msg.topic} {msg.payload}")
     
-    message_payload = ast.literal_eval(msg.payload)
-    action =message_payload["action"]
+    message_payload = ast.literal_eval(msg.payload.decode("utf-8"))
+    action = message_payload["action"]
     if action == "play":
         start_playback(msg.payload["payload"]["sound_name"])
     elif action == "stop":
