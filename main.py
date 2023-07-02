@@ -23,7 +23,6 @@ disp = ST7789(
 disp.begin()
 sleeping_gif = Image.open(sleeping_gif_file)
 harmony_screen = Image.open(harmony_screen_file)
-harmony_screen.resize((disp.width, disp.height))
 
 gif_frame = 0
 
@@ -122,7 +121,7 @@ client.connect("3.78.96.233", 1883, 60)
 client.loop_start()
 
 #display logo
-disp.display(harmony_screen)
+disp.display(harmony_screen.resize((disp.width, disp.height)))
 
 #start loop
 while True:
@@ -136,6 +135,6 @@ while True:
         except EOFError:
             gif_frame = 0
     else:
-        disp.display(harmony_screen)
+        disp.display(harmony_screen.resize((disp.width, disp.height)))
         print("Waiting for messages")
         time.sleep(1)
