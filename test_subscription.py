@@ -24,8 +24,8 @@ test_payloads=[
     }
 ]
 cnt = 0
-while cnt <= len(test_payloads):
-    client.publish('raspberry/topic', payload=test_payloads[cnt], qos=0, retain=False)
+while cnt < len(test_payloads):
+    client.publish('raspberry/topic', payload=str(test_payloads[cnt]), qos=0, retain=False)
     print(f"send {cnt} to raspberry/topic")
     cnt+=1
     time.sleep(10)

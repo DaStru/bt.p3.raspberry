@@ -8,7 +8,7 @@ from ST7789 import ST7789
 
 #setup display
 SPI_SPEED_MHZ = 80
-image_file = "assets\images\sleeping_dog.gif"
+image_file = "./assets/images/sleeping_dog.gif"
 
 disp = ST7789(
     height=240,
@@ -112,6 +112,7 @@ def on_message(client, userdata, msg):
 #connect to mqtt
 client = mqtt.Client()
 client.on_connect = on_connect
+client.on_message = on_message
 client.username_pw_set("raspberrypi", "changemepls")
 client.connect("3.78.96.233", 1883, 60)
 
@@ -121,7 +122,7 @@ client.loop_start()
 while True:
     if currently_playing == False:
         print("Waiting for messages")
-        time.sleep(0.05)
+        time.sleep(0.5)
     else:
         try:
             image.seek(gif_frame)
