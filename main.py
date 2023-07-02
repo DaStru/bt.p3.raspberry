@@ -104,7 +104,7 @@ def on_message(client, userdata, msg):
     message_payload = ast.literal_eval(msg.payload.decode("utf-8"))
     action = message_payload["action"]
     if action == "play":
-        start_playback(msg.payload["payload"]["sound_name"])
+        start_playback(message_payload["payload"]["sound_name"])
     elif action == "stop":
         stop_playback()
 
