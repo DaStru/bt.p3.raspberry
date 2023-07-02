@@ -136,5 +136,6 @@ while True:
         except EOFError:
             gif_frame = 0
     else:
+        disp.display(harmony_screen)
         print("Waiting for messages")
         time.sleep(1)
