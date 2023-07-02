@@ -10,9 +10,22 @@ client.username_pw_set("raspberrypi", "changemepls")
 client.connect("3.78.96.233", 1883, 60)
 
 client.loop_start()
+
+test_payloads=[
+    {
+        "action": "play",
+        "payload": {
+            "sound_name": "testsound1.mp3"
+        }
+    },
+    {
+        "action": "stop",
+        "payload": {}
+    }
+]
 cnt = 0
-while True:
-    client.publish('raspberry/topic', payload=cnt, qos=0, retain=False)
+while cnt <= len(test_payloads):
+    client.publish('raspberry/topic', payload=test_payloads[cnt], qos=0, retain=False)
     print(f"send {cnt} to raspberry/topic")
     cnt+=1
-    time.sleep(3)
+    time.sleep(10)
