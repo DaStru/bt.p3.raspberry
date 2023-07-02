@@ -22,7 +22,7 @@ disp = ST7789(
 disp.begin()
 image = Image.open(image_file)
 
-gif_gif_frame = 0
+gif_frame = 0
 
 #mopidy settings
 mopidy_url = "http://localhost:6680/mopidy/rpc"
@@ -31,7 +31,7 @@ mopidy_url = "http://localhost:6680/mopidy/rpc"
 currently_playing = False
 
 def start_playback(sound):
-    global gif_frame
+    global gif_frame, currently_playing
     payload = {
         "jsonrpc": "2.0",
         "id": 1,
@@ -80,7 +80,7 @@ def start_playback(sound):
 
 
 def stop_playback():
-    global gif_frame
+    global gif_frame, currently_playing
     payload = {
         "jsonrpc": "2.0",
         "id": 1,
