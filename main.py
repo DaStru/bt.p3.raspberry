@@ -91,7 +91,7 @@ def stop_playback():
     response = requests.post(mopidy_url, json=payload).json()
     currently_playing = False
 
-    disp.display(harmony_screen)
+    disp.display(harmony_screen.resize((disp.width, disp.height)))
     gif_frame = 0
     print("Stopped playing")
 
