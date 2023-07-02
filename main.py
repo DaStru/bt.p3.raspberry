@@ -34,6 +34,7 @@ currently_playing = False
 
 def start_playback(sound):
     global gif_frame, currently_playing
+    currently_playing = True
     payload = {
         "jsonrpc": "2.0",
         "id": 1,
@@ -70,7 +71,6 @@ def start_playback(sound):
         "method": "core.playback.play"
     }
     response = requests.post(mopidy_url, json=payload).json()
-    currently_playing = True
 
     sleeping_gif.seek(gif_frame)
     disp.display(sleeping_gif.resize((disp.width, disp.height)))
@@ -83,13 +83,13 @@ def start_playback(sound):
 
 def stop_playback():
     global gif_frame, currently_playing
+    currently_playing = False
     payload = {
         "jsonrpc": "2.0",
         "id": 1,
         "method": "core.playback.stop"
     }
     response = requests.post(mopidy_url, json=payload).json()
-    currently_playing = False
 
     disp.display(harmony_screen.resize((disp.width, disp.height)))
     gif_frame = 0
