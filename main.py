@@ -1,7 +1,6 @@
-from dis import dis
-from glob import glob
 import paho.mqtt.client as mqtt
 import time
+import ast
 import requests
 from PIL import Image, ImageDraw
 from ST7789 import ST7789
@@ -102,7 +101,8 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print(f"{msg.topic} {msg.payload}")
     
-    action = msg.payload["action"]
+    message_payload = ast.literal_eval(msg.payload)
+    action =message_payload["action"]
     if action == "play":
         start_playback(msg.payload["payload"]["sound_name"])
     elif action == "stop":
