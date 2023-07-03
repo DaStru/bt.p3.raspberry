@@ -165,9 +165,10 @@ disp.display(harmony_screen.resize((disp.width, disp.height)))
 
 #start loop
 while True:
-    if currently_playing == True:
-        print("Currently playing")
-        time.sleep(1)
-    else:
-        print("Waiting for messages")
-        time.sleep(1)
+    # if currently_playing == True:
+    #     print("Currently playing")
+    #     time.sleep(1)
+    # else:
+    #     print("Waiting for messages")
+    #     time.sleep(1)
+    pass
