@@ -33,16 +33,20 @@ mopidy_url = "http://localhost:6680/mopidy/rpc"
 currently_playing = False
 currently_paused = False
 
-async def start_playback(sound, thumbnail_location):
+def start_playback(sound, thumbnail_location):
     global gif_frame, currently_playing, currently_paused
     currently_paused = False
     currently_playing = True
+    
+    thumbnail_screen = Image.open("./assets/images/"+ thumbnail_location)
+    disp.display(thumbnail_screen.resize((disp.width, disp.height)))
+    
     payload = {
         "jsonrpc": "2.0",
         "id": 1,
         "method": "core.tracklist.clear"
     }
-    response = await requests.post(mopidy_url, json=payload).json()
+    response = requests.post(mopidy_url, json=payload).json()
     print("Cleared tracklist")
 
     payload = {
@@ -74,9 +78,6 @@ async def start_playback(sound, thumbnail_location):
     }
     response = requests.post(mopidy_url, json=payload).json()
 
-    thumbnail_screen = Image.open("./assets/images/"+ thumbnail_location)
-    disp.display(thumbnail_screen.resize((disp.width, disp.height)))
-
     time.sleep(0.05)
 
     print("Started playing")
@@ -97,19 +98,20 @@ def pause_playback():
 
     print("Paused playing")
 
-async def resume_playback(thumbnail_location):
+def resume_playback(thumbnail_location):
     global gif_frame, currently_playing, currently_paused
     currently_paused = False
     currently_playing = True
+    
+    thumbnail_screen = Image.open("./assets/images/"+ thumbnail_location)
+    disp.display(thumbnail_screen.resize((disp.width, disp.height)))
+    
     payload = {
         "jsonrpc": "2.0",
         "id": 1,
         "method": "core.playback.resume"
     }
-    response = await requests.post(mopidy_url, json=payload).json()
-
-    thumbnail_screen = Image.open("./assets/images/"+ thumbnail_location)
-    disp.display(thumbnail_screen.resize((disp.width, disp.height)))
+    response = requests.post(mopidy_url, json=payload).json()
 
     print("Resumed playing")
 
