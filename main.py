@@ -79,7 +79,19 @@ def start_playback(sound):
 
     print("Started playing")
 
+def pause_playback():
+    global gif_frame, currently_playing
+    currently_playing = False
+    payload = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "core.playback.pause"
+    }
+    response = requests.post(mopidy_url, json=payload).json()
 
+    disp.display(harmony_screen.resize((disp.width, disp.height)))
+    gif_frame = 0
+    print("Stopped playing")
 
 def stop_playback():
     global gif_frame, currently_playing
@@ -107,6 +119,8 @@ def on_message(client, userdata, msg):
     action = message_payload["action"]
     if action == "play":
         start_playback(message_payload["payload"]["sound_name"])
+    elif action == "pause":
+        pause_playback()
     elif action == "stop":
         stop_playback()
 
