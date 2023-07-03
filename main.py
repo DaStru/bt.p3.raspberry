@@ -33,7 +33,7 @@ mopidy_url = "http://localhost:6680/mopidy/rpc"
 currently_playing = False
 currently_paused = False
 
-def start_playback(sound):
+def start_playback(sound, thumbnail_location):
     global gif_frame, currently_playing, currently_paused
     currently_paused = False
     currently_playing = True
@@ -74,9 +74,9 @@ def start_playback(sound):
     }
     response = requests.post(mopidy_url, json=payload).json()
 
-    sleeping_gif.seek(gif_frame)
-    disp.display(sleeping_gif.resize((disp.width, disp.height)))
-    gif_frame += 1
+    thumbnail_screen = Image.open("./assets/images/"+ thumbnail_location)
+    disp.display(thumbnail_screen.resize((disp.width, disp.height)))
+
     time.sleep(0.05)
 
     print("Started playing")
@@ -97,7 +97,7 @@ def pause_playback():
 
     print("Paused playing")
 
-def resume_playback():
+def resume_playback(thumbnail_location):
     global gif_frame, currently_playing, currently_paused
     currently_paused = False
     currently_playing = True
@@ -108,10 +108,8 @@ def resume_playback():
     }
     response = requests.post(mopidy_url, json=payload).json()
 
-    sleeping_gif.seek(gif_frame)
-    disp.display(sleeping_gif.resize((disp.width, disp.height)))
-    gif_frame += 1
-    time.sleep(0.05)
+    thumbnail_screen = Image.open("./assets/images/"+ thumbnail_location)
+    disp.display(thumbnail_screen.resize((disp.width, disp.height)))
 
     print("Resumed playing")
 
@@ -142,9 +140,9 @@ def on_message(client, userdata, msg):
     action = message_payload["action"]
     if action == "play":
         if not currently_paused:
-            start_playback(message_payload["payload"]["sound_name"])
+            start_playback(message_payload["payload"]["sound_name"], message_payload["payload"]["thumbnail_name"])
         else:
-            resume_playback()
+            resume_playback(message_payload["payload"]["thumbnail_name"])
     elif action == "pause":
         pause_playback()
     elif action == "stop":
@@ -166,14 +164,8 @@ disp.display(harmony_screen.resize((disp.width, disp.height)))
 #start loop
 while True:
     if currently_playing == True:
-        try:
-            sleeping_gif.seek(gif_frame)
-            disp.display(sleeping_gif.resize((disp.width, disp.height)))
-            gif_frame += 1
-            time.sleep(0.05)
-
-        except EOFError:
-            gif_frame = 0
+        print("Currently playing")
+        time.sleep(1)
     else:
         print("Waiting for messages")
         time.sleep(1)
