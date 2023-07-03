@@ -34,7 +34,8 @@ currently_playing = False
 currently_paused = False
 
 def start_playback(sound):
-    global gif_frame, currently_playing
+    global gif_frame, currently_playing, currently_paused
+    currently_paused = False
     currently_playing = True
     payload = {
         "jsonrpc": "2.0",
@@ -115,7 +116,8 @@ def resume_playback():
     print("Resumed playing")
 
 def stop_playback():
-    global gif_frame, currently_playing
+    global gif_frame, currently_playing, currently_paused
+    currently_paused = False
     currently_playing = False
     payload = {
         "jsonrpc": "2.0",
