@@ -31,6 +31,7 @@ mopidy_url = "http://localhost:6680/mopidy/rpc"
 
 #gemeral settings
 currently_playing = False
+currently_paused = False
 
 def start_playback(sound):
     global gif_frame, currently_playing
@@ -80,8 +81,9 @@ def start_playback(sound):
     print("Started playing")
 
 def pause_playback():
-    global gif_frame, currently_playing
+    global gif_frame, currently_playing, currently_paused
     currently_playing = False
+    currently_paused = True
     payload = {
         "jsonrpc": "2.0",
         "id": 1,
@@ -91,7 +93,26 @@ def pause_playback():
 
     disp.display(harmony_screen.resize((disp.width, disp.height)))
     gif_frame = 0
-    print("Stopped playing")
+
+    print("Paused playing")
+
+def resume_playback():
+    global gif_frame, currently_playing, currently_paused
+    currently_paused = False
+    currently_playing = True
+    payload = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "core.playback.resume"
+    }
+    response = requests.post(mopidy_url, json=payload).json()
+
+    sleeping_gif.seek(gif_frame)
+    disp.display(sleeping_gif.resize((disp.width, disp.height)))
+    gif_frame += 1
+    time.sleep(0.05)
+
+    print("Resumed playing")
 
 def stop_playback():
     global gif_frame, currently_playing
@@ -118,7 +139,10 @@ def on_message(client, userdata, msg):
     message_payload = ast.literal_eval(msg.payload.decode("utf-8"))
     action = message_payload["action"]
     if action == "play":
-        start_playback(message_payload["payload"]["sound_name"])
+        if not currently_paused:
+            start_playback(message_payload["payload"]["sound_name"])
+        else:
+            resume_playback()
     elif action == "pause":
         pause_playback()
     elif action == "stop":
