@@ -7,6 +7,7 @@ from ST7789 import ST7789
 
 #setup display
 SPI_SPEED_MHZ = 80
+base_path = "/home/harmony/bt.p3.raspberry"
 sleeping_gif_file = "/home/harmony/bt.p3.raspberry/assets/images/sleeping_dog.gif"
 harmony_screen_file = "/home/harmony/bt.p3.raspberry/assets/images/harmony_screen.png"
 
@@ -38,7 +39,7 @@ def start_playback(sound, thumbnail_location):
     currently_paused = False
     currently_playing = True
     
-    thumbnail_screen = Image.open("./assets/images/"+ thumbnail_location)
+    thumbnail_screen = Image.open(base_path+"/assets/images/"+ thumbnail_location)
     disp.display(thumbnail_screen.resize((disp.width, disp.height)))
     
     payload = {
@@ -103,7 +104,7 @@ def resume_playback(thumbnail_location):
     currently_paused = False
     currently_playing = True
     
-    thumbnail_screen = Image.open("./assets/images/"+ thumbnail_location)
+    thumbnail_screen = Image.open(base_path+"/assets/images/"+ thumbnail_location)
     disp.display(thumbnail_screen.resize((disp.width, disp.height)))
     
     payload = {
