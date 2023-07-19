@@ -7,8 +7,8 @@ from ST7789 import ST7789
 
 #setup display
 SPI_SPEED_MHZ = 80
-sleeping_gif_file = "./assets/images/sleeping_dog.gif"
-harmony_screen_file = "./assets/images/harmony_screen.png"
+sleeping_gif_file = "/home/harmony/bt.p3.raspberry/assets/images/sleeping_dog.gif"
+harmony_screen_file = "/home/harmony/bt.p3.raspberry/assets/images/harmony_screen.png"
 
 disp = ST7789(
     height=240,
